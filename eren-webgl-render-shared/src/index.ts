@@ -1,1 +1,2 @@
-export * from "./GL.js";
+export * from './gl.js';
+export * from './program.js';

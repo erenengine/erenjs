@@ -1,4 +1,4 @@
-import { GameNode } from "../../dist/nodes/game_node.js";
+import { GameNode } from '../../dist/nodes/game_node.js';
 import { GameState } from '../../dist/state.js';
 import { GlobalTransform } from '../../dist/transform.js';
 import { AssetBundle } from '../../dist/asset_bundle.js';
@@ -37,7 +37,7 @@ class LoadingScreen implements GameNode<SpriteAssets> {
 
   constructor() {
     this.#assetBundle = new AssetBundle<SpriteAssets>(new Map([
-      [SpriteAssets.Logo, "examples/assets/logo.png"],
+      [SpriteAssets.Logo, 'examples/assets/logo.png'],
     ]));
     this.#logo = new SpriteNode(SpriteAssets.Logo);
   }
@@ -55,7 +55,7 @@ class InGameScreen implements GameNode<SpriteAssets> {
 
   constructor() {
     this.assetBundle = new AssetBundle<SpriteAssets>(new Map([
-      [SpriteAssets.TestSprite, "examples/assets/test_sprite.png"],
+      [SpriteAssets.TestSprite, 'examples/assets/test_sprite.png'],
     ]));
     this.#sprite = new SpriteNode(SpriteAssets.TestSprite);
   }

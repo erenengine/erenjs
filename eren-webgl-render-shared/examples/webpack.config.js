@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    'test-shader': './test-shader/index.ts',
+    'test-pass1': './test-pass1/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',
@@ -20,6 +20,10 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(vert|frag)$/,
+        loader: 'raw-loader',
       },
     ],
   },

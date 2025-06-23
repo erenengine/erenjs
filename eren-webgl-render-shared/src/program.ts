@@ -1,12 +1,15 @@
-export function createProgram(gl: WebGL2RenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram {
-  const program = gl.createProgram();
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    const infoLog = gl.getProgramInfoLog(program);
-    gl.deleteProgram(program); // 리소스 정리
-    throw new Error('Failed to link program: ' + infoLog);
+import { GL } from './gl.js';
+
+export class Program {
+  #gl: GL;
+  #program: WebGLProgram;
+
+  constructor(gl: GL, vertexShaderSource: string, fragmentShaderSource: string) {
+    this.#gl = gl;
+    this.#program = this.#gl.createProgram(vertexShaderSource, fragmentShaderSource);
   }
-  return program;
+
+  use() {
+    this.#gl.useProgram(this.#program);
+  }
 }

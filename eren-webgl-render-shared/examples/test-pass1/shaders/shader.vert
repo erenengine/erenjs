@@ -18,6 +18,8 @@ const vec3 colors[3] = vec3[3](
 
 void main() {
     // WebGL2 에서는 gl_VertexID 사용
-    gl_Position = vec4(positions[gl_VertexID], 0.0, 1.0);
+    vec2 p = positions[gl_VertexID];
+    // Y축 뒤집기
+    gl_Position = vec4(p.x, -p.y, 0.0, 1.0);
     vColor      = colors[gl_VertexID];
 }
