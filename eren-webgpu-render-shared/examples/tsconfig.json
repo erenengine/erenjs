@@ -17,5 +17,8 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "strict": true,
+    "types": [
+      "@webgpu/types"
+    ]
   }
 }

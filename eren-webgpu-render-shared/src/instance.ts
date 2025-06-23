@@ -1,9 +1,12 @@
 export class Instance {
   #gpu: GPU;
 
+  preferredFormat: GPUTextureFormat;
+
   constructor() {
     if (!navigator.gpu) throw new Error('WebGPU support is not available');
     this.#gpu = navigator.gpu;
+    this.preferredFormat = navigator.gpu.getPreferredCanvasFormat();
   }
 
   async requestAdapter() {

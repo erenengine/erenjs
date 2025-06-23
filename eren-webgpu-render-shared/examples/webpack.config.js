@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     'test-instance': './test-instance/index.ts',
     'test-device': './test-device/index.ts',
+    'test-pass1': './test-pass1/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',
@@ -22,10 +23,14 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.wgsl/,
+        loader: 'raw-loader',
+      },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
   },
   devServer: {
     client: {

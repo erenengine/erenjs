@@ -1,16 +1,35 @@
 import { Adapter } from './adapter.js';
+import { Context } from './context.js';
 
 export class Device {
   #device: GPUDevice;
-  #queue: GPUQueue;
+
+  queue: GPUQueue;
 
   private constructor(device: GPUDevice, queue: GPUQueue) {
     this.#device = device;
-    this.#queue = queue;
+    this.queue = queue;
   }
 
-  static async create(adapter: Adapter): Promise<Device> {
+  static async create(adapter: Adapter, context: Context, format: GPUTextureFormat): Promise<Device> {
     const device = await adapter.requestDevice();
+    context.configure({ device, format, alphaMode: 'opaque' });
     return new Device(device, device.queue);
+  }
+
+  createShaderModule(descriptor: GPUShaderModuleDescriptor): GPUShaderModule {
+    return this.#device.createShaderModule(descriptor);
+  }
+
+  createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor): GPUPipelineLayout {
+    return this.#device.createPipelineLayout(descriptor);
+  }
+
+  createRenderPipeline(descriptor: GPURenderPipelineDescriptor): GPURenderPipeline {
+    return this.#device.createRenderPipeline(descriptor);
+  }
+
+  createCommandEncoder(descriptor: GPUCommandEncoderDescriptor): GPUCommandEncoder {
+    return this.#device.createCommandEncoder(descriptor);
   }
 }
