@@ -16,7 +16,7 @@ export class TestRenderPass {
 
   recordCommands() {
     this.#gl.clear(CLEAR_COLOR);
-    this.#program.use();
+    this.#program.use(); // 너, 사용!
     this.#gl.draw(3, 1);
   }
 }
