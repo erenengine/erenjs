@@ -1,5 +1,5 @@
 import SHADER_STR from '../../shaders/shader.wgsl';
-import { Device } from '../../../../dist/device.js';
+import { Device } from '../../dist/device.js';
 
 const CLEAR_COLOR = { r: 0.1921, g: 0.302, b: 0.4745, a: 1 };
 

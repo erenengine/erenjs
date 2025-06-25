@@ -1,5 +1,5 @@
 import { GL } from '../../dist/gl.js';
-import { TestRenderer } from './renderer/test-renderer';
+import { TestRenderer } from './test-renderer.js';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
