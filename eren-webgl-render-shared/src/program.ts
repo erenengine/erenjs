@@ -12,4 +12,8 @@ export class Program {
   use() {
     this.#gl.useProgram(this.#program);
   }
+
+  getUniformLocation(name: string) {
+    return this.#gl.getUniformLocation(this.#program, name);
+  }
 }

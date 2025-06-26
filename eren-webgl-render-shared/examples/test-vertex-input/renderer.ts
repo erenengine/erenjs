@@ -8,7 +8,7 @@ export class TestRenderer {
     this.#renderPass = new TestRenderPass(gl);
   }
 
-  render() {
-    this.#renderPass.recordCommands();
+  render(canvasWidth: number, canvasHeight: number) {
+    this.#renderPass.recordCommands(canvasWidth, canvasHeight);
   }
 }
