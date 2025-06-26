@@ -32,4 +32,16 @@ export class Device {
   createCommandEncoder(descriptor: GPUCommandEncoderDescriptor): GPUCommandEncoder {
     return this.#device.createCommandEncoder(descriptor);
   }
+
+  createBuffer(descriptor: GPUBufferDescriptor): GPUBuffer {
+    return this.#device.createBuffer(descriptor);
+  }
+
+  createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor): GPUBindGroupLayout {
+    return this.#device.createBindGroupLayout(descriptor);
+  }
+
+  createBindGroup(descriptor: GPUBindGroupDescriptor): GPUBindGroup {
+    return this.#device.createBindGroup(descriptor);
+  }
 }

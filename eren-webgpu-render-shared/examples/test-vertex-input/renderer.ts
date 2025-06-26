@@ -1,5 +1,5 @@
 import { Device } from '../../dist/device.js';
-import { TestRenderPass } from './test-render-pass';
+import { TestRenderPass } from './render-pass';
 
 export class TestRenderer {
   #device: Device;
@@ -10,9 +10,9 @@ export class TestRenderer {
     this.#renderPass = new TestRenderPass(device, format);
   }
 
-  render(view: GPUTextureView) {
+  render(view: GPUTextureView, canvasWidth: number, canvasHeight: number) {
     const encoder = this.#device.createCommandEncoder({ label: 'Test Render Encoder' });
-    this.#renderPass.recordCommands(encoder, view);
+    this.#renderPass.recordCommands(encoder, view, canvasWidth, canvasHeight);
     this.#device.queue.submit([encoder.finish()]);
   }
 }

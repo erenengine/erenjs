@@ -1,4 +1,4 @@
-import { TestRenderPass } from './test-render-pass';
+import { TestRenderPass } from './render-pass';
 import { GL } from '../../dist/gl.js';
 
 export class TestRenderer {

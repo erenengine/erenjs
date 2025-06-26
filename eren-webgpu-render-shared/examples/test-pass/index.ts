@@ -2,7 +2,7 @@ import { Instance } from '../../dist/instance.js';
 import { Adapter } from '../../dist/adapter.js';
 import { Context } from '../../dist/context.js';
 import { Device } from '../../dist/device.js';
-import { TestRenderer } from './test-renderer';
+import { TestRenderer } from './renderer';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 

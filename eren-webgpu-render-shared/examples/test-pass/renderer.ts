@@ -1,5 +1,5 @@
 import { Device } from '../../dist/device.js';
-import { TestRenderPass } from './test-render-pass';
+import { TestRenderPass } from './render-pass';
 
 export class TestRenderer {
   #device: Device;
