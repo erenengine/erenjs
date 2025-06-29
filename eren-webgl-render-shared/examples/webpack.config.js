@@ -4,7 +4,8 @@ const webpack = require('webpack');
 module.exports = {
   entry: {
     'test-pass': './test-pass/index.ts',
-    'test-vertex-input': './test-vertex-input/index.ts',
+    'test-vertex-buffer': './test-vertex-buffer/index.ts',
+    'test-uniform': './test-uniform/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',

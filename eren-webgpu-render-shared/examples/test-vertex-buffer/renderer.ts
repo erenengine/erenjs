@@ -10,9 +10,9 @@ export class TestRenderer {
     this.#renderPass = new TestRenderPass(device, format);
   }
 
-  render(view: GPUTextureView, canvasWidth: number, canvasHeight: number) {
+  render(view: GPUTextureView) {
     const encoder = this.#device.createCommandEncoder({ label: 'Test Render Encoder' });
-    this.#renderPass.recordCommands(encoder, view, canvasWidth, canvasHeight);
+    this.#renderPass.recordCommands(encoder, view);
     this.#device.queue.submit([encoder.finish()]);
   }
 }

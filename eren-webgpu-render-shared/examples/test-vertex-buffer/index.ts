@@ -14,7 +14,7 @@ const renderer = new TestRenderer(device, instance.preferredFormat);
 
 function frame() {
   //console.log('frame');
-  renderer.render(context.getCurrentTexture().createView(), canvas.width, canvas.height);
+  renderer.render(context.getCurrentTexture().createView());
   requestAnimationFrame(frame);
 }
 

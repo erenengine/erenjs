@@ -63,7 +63,6 @@ export class TestRenderPass {
   #device: Device;
   #pipeline: GPURenderPipeline;
   #combinedBuffer: CombinedBuffer;
-  #startTime: number;
 
   constructor(device: Device, format: GPUTextureFormat) {
     this.#device = device;
@@ -95,10 +94,9 @@ export class TestRenderPass {
     });
 
     this.#combinedBuffer = createCombinedBuffer(device);
-    this.#startTime = Date.now();
   }
 
-  recordCommands(encoder: GPUCommandEncoder, view: GPUTextureView, canvasWidth: number, canvasHeight: number) {
+  recordCommands(encoder: GPUCommandEncoder, view: GPUTextureView) {
     const passEncoder = encoder.beginRenderPass({
       colorAttachments: [{
         view,
