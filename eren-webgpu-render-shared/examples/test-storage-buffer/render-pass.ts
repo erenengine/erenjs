@@ -2,7 +2,7 @@ import SHADER_STR from './shaders/shader.wgsl';
 import { Device } from '../../dist/device.js';
 import { flattenVertices, Vertex, VERTEX_DESC } from './vertex';
 import { mat4, vec2, vec3 } from 'gl-matrix';
-import { flattenSBO, StorageBufferObject } from './sbo';
+import { flattenSBO, StorageBufferObject } from './ssbo';
 
 const CLEAR_COLOR = { r: 0.1921, g: 0.302, b: 0.4745, a: 1 };
 
