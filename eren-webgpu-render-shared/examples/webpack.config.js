@@ -6,7 +6,8 @@ module.exports = {
     'test-instance': './test-instance/index.ts',
     'test-device': './test-device/index.ts',
     'test-pass': './test-pass/index.ts',
-    'test-vertex-input': './test-vertex-input/index.ts',
+    'test-vertex-buffer': './test-vertex-buffer/index.ts',
+    'test-uniform': './test-uniform/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',
