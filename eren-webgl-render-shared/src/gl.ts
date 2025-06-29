@@ -96,7 +96,7 @@ export class GL {
     this.#gl.drawArraysInstanced(this.#gl.TRIANGLES, 0, vertexCount, instanceCount);
   }
 
-  drawElements(vertexCount: number, instanceCount: number) {
-    this.#gl.drawElementsInstanced(this.#gl.TRIANGLES, vertexCount, this.#gl.UNSIGNED_SHORT, 0, instanceCount);
+  drawIndexed(indexCount: number, instanceCount: number) {
+    this.#gl.drawElementsInstanced(this.#gl.TRIANGLE_STRIP, indexCount, this.#gl.UNSIGNED_SHORT, 0, instanceCount);
   }
 }

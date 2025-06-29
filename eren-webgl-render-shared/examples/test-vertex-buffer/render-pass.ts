@@ -1,27 +1,41 @@
 import VERT_SHADER_STR from './shaders/shader.vert';
 import FRAG_SHADER_STR from './shaders/shader.frag';
 import { Program } from '../../dist/program.js';
-import { ARRAY_BUFFER, ELEMENT_ARRAY_BUFFER, FLOAT, GL, STATIC_DRAW } from '../../dist/gl.js';
-import { mat4, vec2, vec3 } from 'gl-matrix';
+import { ARRAY_BUFFER, FLOAT, GL, STATIC_DRAW } from '../../dist/gl.js';
+import { vec2, vec3 } from 'gl-matrix';
 import { flattenVertices, Vertex } from './vertex';
 
 const CLEAR_COLOR = { r: 0.1921, g: 0.302, b: 0.4745, a: 1 };
 
-const TEST_VERTICES: Vertex[] = [{
-  pos: vec2.fromValues(-0.5, -0.5),
-  color: vec3.fromValues(1, 0, 0),
-}, {
-  pos: vec2.fromValues(0.5, -0.5),
-  color: vec3.fromValues(0, 1, 0),
-}, {
-  pos: vec2.fromValues(0.5, 0.5),
-  color: vec3.fromValues(0, 0, 1),
-}, {
-  pos: vec2.fromValues(-0.5, 0.5),
-  color: vec3.fromValues(1, 1, 1),
-}];
+const TEST_VERTICES: Vertex[] = [
+  // 첫 번째 삼각형: 좌하단 → 우하단 → 우상단
+  {
+    pos: vec2.fromValues(-0.5, -0.5),
+    color: vec3.fromValues(1, 0, 0),
+  },
+  {
+    pos: vec2.fromValues(0.5, -0.5),
+    color: vec3.fromValues(0, 1, 0),
+  },
+  {
+    pos: vec2.fromValues(0.5, 0.5),
+    color: vec3.fromValues(0, 0, 1),
+  },
 
-const TEST_INDICES: number[] = [0, 1, 2, 2, 3, 0];
+  // 두 번째 삼각형: 우상단 → 좌상단 → 좌하단
+  {
+    pos: vec2.fromValues(0.5, 0.5),
+    color: vec3.fromValues(0, 0, 1),
+  },
+  {
+    pos: vec2.fromValues(-0.5, 0.5),
+    color: vec3.fromValues(1, 1, 1),
+  },
+  {
+    pos: vec2.fromValues(-0.5, -0.5),
+    color: vec3.fromValues(1, 0, 0),
+  },
+];
 
 export class TestRenderPass {
   #gl: GL;
@@ -39,10 +53,6 @@ export class TestRenderPass {
     gl.bindBuffer(ARRAY_BUFFER, vbo);
     gl.bufferData(ARRAY_BUFFER, flattenVertices(TEST_VERTICES), STATIC_DRAW);
 
-    const ebo = gl.createBuffer();
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, ebo);
-    gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16Array(TEST_INDICES), STATIC_DRAW);
-
     // Enable attributes
     const stride = 5 * 4;
     gl.enableVertexAttribArray(0);
@@ -57,6 +67,6 @@ export class TestRenderPass {
     this.#program.use();
 
     this.#gl.bindVertexArray(this.#vao);
-    this.#gl.drawElements(TEST_INDICES.length, 1);
+    this.#gl.draw(TEST_VERTICES.length, 1);
   }
 }

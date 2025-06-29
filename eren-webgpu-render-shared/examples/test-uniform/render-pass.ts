@@ -120,7 +120,8 @@ export class TestRenderPass {
         targets: [{ format }],
       },
       primitive: {
-        topology: 'triangle-list',
+        topology: 'triangle-strip',
+        stripIndexFormat: 'uint16',
       },
     });
 

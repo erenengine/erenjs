@@ -7,6 +7,7 @@ module.exports = {
     'test-device': './test-device/index.ts',
     'test-pass': './test-pass/index.ts',
     'test-vertex-buffer': './test-vertex-buffer/index.ts',
+    'test-index-buffer': './test-index-buffer/index.ts',
     'test-uniform': './test-uniform/index.ts',
   },
   output: {
