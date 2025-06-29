@@ -64,8 +64,8 @@ export class TestRenderPass {
   #device: Device;
   #pipeline: GPURenderPipeline;
   #combinedBuffer: CombinedBuffer;
-  #sboBuffer: GPUBuffer;
-  #sboBindGroup: GPUBindGroup;
+  #ssboBuffer: GPUBuffer;
+  #ssboBindGroup: GPUBindGroup;
   #startTime: number;
 
   constructor(device: Device, format: GPUTextureFormat) {
@@ -74,15 +74,15 @@ export class TestRenderPass {
     let shaderModule = device.createShaderModule({ label: 'Test Shader', code: SHADER_STR });
 
     const mat4Size = 4 * 4 * 4; // 4x4 float32 = 16 floats * 4 bytes = 64 bytes
-    const sboSize = mat4Size * 3; // model + view + proj = 3 * 64 = 192 bytes
+    const ssboSize = mat4Size * 3; // model + view + proj = 3 * 64 = 192 bytes
 
-    this.#sboBuffer = device.createBuffer({
-      label: 'SBO Buffer',
-      size: sboSize,
+    this.#ssboBuffer = device.createBuffer({
+      label: 'SSBO Buffer',
+      size: ssboSize,
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    const sboBindGroupLayout = device.createBindGroupLayout({
+    const ssboBindGroupLayout = device.createBindGroupLayout({
       label: 'SBO Bind Group Layout',
       entries: [{
         binding: 0,
@@ -91,18 +91,18 @@ export class TestRenderPass {
       }],
     });
 
-    this.#sboBindGroup = device.createBindGroup({
+    this.#ssboBindGroup = device.createBindGroup({
       label: 'SBO Bind Group',
-      layout: sboBindGroupLayout,
+      layout: ssboBindGroupLayout,
       entries: [{
         binding: 0,
-        resource: { buffer: this.#sboBuffer },
+        resource: { buffer: this.#ssboBuffer },
       }],
     });
 
     let pipelineLayout = device.createPipelineLayout({
       label: 'Test Pipeline Layout',
-      bindGroupLayouts: [sboBindGroupLayout],
+      bindGroupLayouts: [ssboBindGroupLayout],
       // WebGPU에서는 pushConstantRanges를 지원하지 않음
     });
 
@@ -132,23 +132,23 @@ export class TestRenderPass {
   #updateStorageBuffer(canvasWidth: number, canvasHeight: number) {
     const now = (performance.now() - this.#startTime) / 1000.0;
 
-    const sbo: StorageBufferObject = {
+    const ssbo: StorageBufferObject = {
       model: mat4.create(),
       view: mat4.create(),
       proj: mat4.create(),
     };
 
-    mat4.fromZRotation(sbo.model, -(now * 90 * Math.PI) / 180);
+    mat4.fromZRotation(ssbo.model, -(now * 90 * Math.PI) / 180);
 
     const eye = vec3.fromValues(2, 2, 2);
     const center = vec3.fromValues(0, 0, 0);
     const up = vec3.fromValues(0, 0, 1);
-    mat4.lookAt(sbo.view, eye, center, up);
+    mat4.lookAt(ssbo.view, eye, center, up);
 
     const aspect = canvasWidth / canvasHeight;
-    mat4.perspective(sbo.proj, Math.PI / 4, aspect, 0.1, 10);
+    mat4.perspective(ssbo.proj, Math.PI / 4, aspect, 0.1, 10);
 
-    this.#device.queue.writeBuffer(this.#sboBuffer, 0, flattenSBO(sbo));
+    this.#device.queue.writeBuffer(this.#ssboBuffer, 0, flattenSBO(ssbo));
   }
 
   recordCommands(encoder: GPUCommandEncoder, view: GPUTextureView, canvasWidth: number, canvasHeight: number) {
@@ -167,7 +167,7 @@ export class TestRenderPass {
     passEncoder.setIndexBuffer(this.#combinedBuffer.buffer, 'uint16', this.#combinedBuffer.indexOffset);
 
     this.#updateStorageBuffer(canvasWidth, canvasHeight);
-    passEncoder.setBindGroup(0, this.#sboBindGroup);
+    passEncoder.setBindGroup(0, this.#ssboBindGroup);
 
     passEncoder.drawIndexed(this.#combinedBuffer.indexCount, 1, 0, 0, 0);
     passEncoder.end();
