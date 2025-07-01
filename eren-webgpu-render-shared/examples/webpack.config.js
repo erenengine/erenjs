@@ -10,6 +10,7 @@ module.exports = {
     'test-index-buffer': './test-index-buffer/index.ts',
     'test-uniform-buffer': './test-uniform-buffer/index.ts',
     'test-storage-buffer': './test-storage-buffer/index.ts',
+    'test-compute-shader': './test-compute-shader/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',

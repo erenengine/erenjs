@@ -25,6 +25,10 @@ export class Device {
     return this.#device.createPipelineLayout(descriptor);
   }
 
+  createComputePipeline(descriptor: GPUComputePipelineDescriptor): GPUComputePipeline {
+    return this.#device.createComputePipeline(descriptor);
+  }
+
   createRenderPipeline(descriptor: GPURenderPipelineDescriptor): GPURenderPipeline {
     return this.#device.createRenderPipeline(descriptor);
   }
