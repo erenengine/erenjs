@@ -7,6 +7,7 @@ module.exports = {
     'test-vertex-buffer': './test-vertex-buffer/index.ts',
     'test-index-buffer': './test-index-buffer/index.ts',
     'test-uniform-buffer': './test-uniform-buffer/index.ts',
+    'test-depth-buffer': './test-depth-buffer/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',

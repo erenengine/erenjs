@@ -5,6 +5,7 @@ export const ARRAY_BUFFER = WebGL2RenderingContext.ARRAY_BUFFER;
 export const ELEMENT_ARRAY_BUFFER = WebGL2RenderingContext.ELEMENT_ARRAY_BUFFER;
 export const STATIC_DRAW = WebGL2RenderingContext.STATIC_DRAW;
 export const FLOAT = WebGL2RenderingContext.FLOAT;
+export const LESS = WebGL2RenderingContext.LESS;
 
 export class GL {
   #gl: WebGL2RenderingContext;
@@ -96,7 +97,27 @@ export class GL {
     this.#gl.drawArraysInstanced(this.#gl.TRIANGLES, 0, vertexCount, instanceCount);
   }
 
+  drawElements(indexCount: number) {
+    this.#gl.drawElements(this.#gl.TRIANGLES, indexCount, this.#gl.UNSIGNED_SHORT, 0);
+  }
+
   drawIndexed(indexCount: number, instanceCount: number) {
     this.#gl.drawElementsInstanced(this.#gl.TRIANGLE_STRIP, indexCount, this.#gl.UNSIGNED_SHORT, 0, instanceCount);
+  }
+
+  enableDepthTest() {
+    this.#gl.enable(this.#gl.DEPTH_TEST);
+  }
+
+  disableDepthTest() {
+    this.#gl.disable(this.#gl.DEPTH_TEST);
+  }
+
+  depthFunc(func: number) {
+    this.#gl.depthFunc(func);
+  }
+
+  clearDepth(depth: number) {
+    this.#gl.clearDepth(depth);
   }
 }
