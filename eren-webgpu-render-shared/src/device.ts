@@ -48,4 +48,8 @@ export class Device {
   createBindGroup(descriptor: GPUBindGroupDescriptor): GPUBindGroup {
     return this.#device.createBindGroup(descriptor);
   }
+
+  createTexture(descriptor: GPUTextureDescriptor): GPUTexture {
+    return this.#device.createTexture(descriptor);
+  }
 }
