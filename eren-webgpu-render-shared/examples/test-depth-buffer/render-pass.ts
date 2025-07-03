@@ -102,7 +102,7 @@ export class TestRenderPass {
   ) {
     this.#device = device;
 
-    let shaderModule = device.createShaderModule({ label: 'Test Shader', code: SHADER_STR });
+    const shaderModule = device.createShaderModule({ label: 'Test Shader', code: SHADER_STR });
 
     const mat4Size = 4 * 4 * 4; // 4x4 float32 = 16 floats * 4 bytes = 64 bytes
     const uboSize = mat4Size * 3; // model + view + proj = 3 * 64 = 192 bytes
@@ -131,7 +131,7 @@ export class TestRenderPass {
       }],
     });
 
-    let pipelineLayout = device.createPipelineLayout({
+    const pipelineLayout = device.createPipelineLayout({
       label: 'Test Pipeline Layout',
       bindGroupLayouts: [uboBindGroupLayout],
       // WebGPU에서는 pushConstantRanges를 지원하지 않음

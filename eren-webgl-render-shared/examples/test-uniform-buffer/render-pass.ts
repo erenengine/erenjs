@@ -55,9 +55,9 @@ export class TestRenderPass {
     gl.enableVertexAttribArray(1);
     gl.vertexAttribPointer(1, 3, FLOAT, false, stride, 2 * 4);
 
-    let uModelLoc = this.#program.getUniformLocation('uModel');
-    let uViewLoc = this.#program.getUniformLocation('uView');
-    let uProjLoc = this.#program.getUniformLocation('uProj');
+    const uModelLoc = this.#program.getUniformLocation('uModel');
+    const uViewLoc = this.#program.getUniformLocation('uView');
+    const uProjLoc = this.#program.getUniformLocation('uProj');
 
     if (!uModelLoc) throw new Error('Failed to get uniform location (uModel)');
     if (!uViewLoc) throw new Error('Failed to get uniform location (uView)');

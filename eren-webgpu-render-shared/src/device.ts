@@ -52,4 +52,8 @@ export class Device {
   createTexture(descriptor: GPUTextureDescriptor): GPUTexture {
     return this.#device.createTexture(descriptor);
   }
+
+  createSampler(descriptor: GPUSamplerDescriptor): GPUSampler {
+    return this.#device.createSampler(descriptor);
+  }
 }

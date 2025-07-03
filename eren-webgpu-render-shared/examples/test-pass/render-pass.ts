@@ -7,8 +7,8 @@ export class TestRenderPass {
   #pipeline: GPURenderPipeline;
 
   constructor(device: Device, format: GPUTextureFormat) {
-    let shaderModule = device.createShaderModule({ label: 'Test Shader', code: SHADER_STR });
-    let pipelineLayout = device.createPipelineLayout({ label: 'Test Pipeline Layout', bindGroupLayouts: [] }); // WebGPU에서는 pushConstantRanges를 지원하지 않음
+    const shaderModule = device.createShaderModule({ label: 'Test Shader', code: SHADER_STR });
+    const pipelineLayout = device.createPipelineLayout({ label: 'Test Pipeline Layout', bindGroupLayouts: [] }); // WebGPU에서는 pushConstantRanges를 지원하지 않음
 
     this.#pipeline = device.createRenderPipeline({
       label: 'Test Pipeline',
