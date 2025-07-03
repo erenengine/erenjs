@@ -37,16 +37,7 @@ export class TestRenderPass {
     this.#gl = gl;
     this.#program = new Program(gl, VERT_SHADER_STR, FRAG_SHADER_STR);
 
-    this.#vao = gl.createVertexArray();
-    gl.bindVertexArray(this.#vao);
-
-    const vbo = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, vbo);
-    gl.bufferData(ARRAY_BUFFER, flattenVertices(TEST_VERTICES), STATIC_DRAW);
-
-    const ebo = gl.createBuffer();
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, ebo);
-    gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16Array(TEST_INDICES), STATIC_DRAW);
+    this.#vao = gl.createVertexArray(flattenVertices(TEST_VERTICES), new Uint16Array(TEST_INDICES));
 
     // Enable attributes
     const stride = 5 * 4;
@@ -93,7 +84,7 @@ export class TestRenderPass {
   }
 
   recordCommands(canvasWidth: number, canvasHeight: number) {
-    this.#gl.clear(CLEAR_COLOR);
+    this.#gl.clearColor(CLEAR_COLOR);
 
     this.#program.use();
 

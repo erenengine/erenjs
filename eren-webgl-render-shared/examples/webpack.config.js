@@ -8,6 +8,7 @@ module.exports = {
     'test-index-buffer': './test-index-buffer/index.ts',
     'test-uniform-buffer': './test-uniform-buffer/index.ts',
     'test-depth-buffer': './test-depth-buffer/index.ts',
+    'test-shadow': './test-shadow/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',

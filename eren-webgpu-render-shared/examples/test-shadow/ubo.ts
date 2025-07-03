@@ -36,10 +36,10 @@ export interface LightUBO {
 }
 
 export function flattenLightUBO(ubo: LightUBO): Float32Array {
-  const buffer = new Float32Array(16);
+  const buffer = new Float32Array(8);
 
   buffer.set(ubo.direction, 0);
-  buffer.set(ubo.color, 12);
+  buffer.set(ubo.color, 4);
 
   return buffer;
 }

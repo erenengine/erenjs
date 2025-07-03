@@ -75,12 +75,12 @@ function createCubeMesh() {
   }));
 
   const indices = [
-    0, 2, 1, 2, 0, 3,
-    4, 6, 5, 6, 4, 7,
-    8, 10, 9, 10, 8, 11,
-    12, 14, 13, 14, 12, 15,
-    16, 18, 17, 18, 16, 19,
-    20, 22, 21, 22, 20, 23,
+    0, 1, 2, 2, 3, 0, // Front
+    4, 5, 6, 6, 7, 4, // Back
+    8, 9, 10, 10, 11, 8, // Top
+    12, 13, 14, 14, 15, 12, // Bottom
+    16, 17, 18, 18, 19, 16, // Right
+    20, 21, 22, 22, 23, 20, // Left
   ];
 
   return { vertices, indices };
@@ -95,7 +95,7 @@ const meshes = [
 ];
 
 function frame() {
-  renderer.render(context.getCurrentTexture().createView(), meshes);
+  renderer.render(context.getCurrentTexture().createView(), meshes, canvas.width, canvas.height);
   requestAnimationFrame(frame);
 }
 
