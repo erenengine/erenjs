@@ -24,7 +24,7 @@ export class TestRenderer {
   resize(canvasWidth: number, canvasHeight: number) {
     this.#shadowPass.resizeShadowTexture(canvasWidth, canvasHeight);
     this.#debugQuadPass.rebindShadowTexture(this.#shadowPass.shadowTexture);
-    //this.#mainPass.resizeDepthTexture(canvasWidth, canvasHeight, this.#shadowPass.shadowTextureView);
+    this.#mainPass.rebindShadowTexture(this.#shadowPass.shadowTexture);
   }
 
   render(meshes: MeshBuffer[], canvasWidth: number, canvasHeight: number) {
@@ -54,9 +54,9 @@ export class TestRenderer {
     } else {
       // Camera follows a slower orbit opposite to the light
       const camPos = vec3.fromValues(
-        radius * Math.cos(speed * time),
+        radius * Math.cos(-speed * time),
         height,
-        radius * Math.sin(speed * time),
+        radius * Math.sin(-speed * time),
       );
 
       const viewMat = mat4.create();

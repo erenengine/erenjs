@@ -220,25 +220,11 @@ export class GL {
     this.#gl.deleteFramebuffer(framebuffer);
   }
 
-  bindTextureToSamplerForRawDepth(texture: WebGLTexture, location: WebGLUniformLocation) {
+  bindRawDepthTexture(texture: WebGLTexture, location: WebGLUniformLocation) {
     const gl = this.#gl;
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    const prevCompare = gl.getTexParameter(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE);
-    if (prevCompare !== gl.NONE) {
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.NONE);
-    }
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.NONE);
     gl.uniform1i(location, 0);
-    return prevCompare;
-  }
-
-  restoreTextureState(prevCompare: number) {
-    const gl = this.#gl;
-    gl.bindVertexArray(null);
-    if (prevCompare !== gl.NONE) {
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, prevCompare);
-    }
-    gl.bindTexture(gl.TEXTURE_2D, null);
-    gl.enable(gl.DEPTH_TEST);
   }
 }

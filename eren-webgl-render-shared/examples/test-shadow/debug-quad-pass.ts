@@ -30,8 +30,7 @@ export class DebugQuadPass {
 
     this.#program.use();
 
-    const prevCompare = this.#gl.bindTextureToSamplerForRawDepth(this.#shadowTexture, this.#uShadowMapLoc);
+    this.#gl.bindRawDepthTexture(this.#shadowTexture, this.#uShadowMapLoc);
     this.#gl.draw(3, 1);
-    this.#gl.restoreTextureState(prevCompare);
   }
 }

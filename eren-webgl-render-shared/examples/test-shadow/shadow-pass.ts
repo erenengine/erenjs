@@ -19,9 +19,7 @@ export class ShadowPass {
     this.#gl = gl;
     this.#program = new Program(gl, VERT_SHADER_STR);
 
-    const loc = this.#program.getUniformLocation('uLightViewProj');
-    if (!loc) throw new Error('Failed to get uniform location (uLightViewProj)');
-    this.#uLightViewProjLoc = loc;
+    this.#uLightViewProjLoc = this.#program.getUniformLocation('uLightViewProj');
 
     gl.enableDepthTest();
     gl.depthFunc(LESS);
@@ -33,7 +31,6 @@ export class ShadowPass {
   resizeShadowTexture(width: number, height: number) {
     const gl = this.#gl;
 
-    // Clean up old objects so we don’t leak GPU memory.
     gl.deleteTexture(this.shadowTexture);
     gl.deleteFramebuffer(this.#fbo);
 
