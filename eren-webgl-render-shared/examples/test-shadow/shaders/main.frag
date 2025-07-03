@@ -17,7 +17,7 @@ float calculateShadow(vec4 shadowCoord) {
 
     // X, Y [-1,1] → [0,1]
     vec2 shadowTexCoord = projCoords.xy * 0.5 + 0.5;
-    float currentDepth = projCoords.z;
+    float currentDepth = projCoords.z * 0.5 + 0.5;
 
     // 범위 밖이면 그림자 없음
     if (currentDepth > 1.0 || shadowTexCoord.x < 0.0 || shadowTexCoord.x > 1.0 ||
