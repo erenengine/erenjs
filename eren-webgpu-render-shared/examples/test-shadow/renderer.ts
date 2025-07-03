@@ -38,7 +38,7 @@ export class TestRenderer {
     const height = 6.0;
 
     const lightX = radius * Math.cos(speed * 2.0 * time);
-    const lightZ = -radius * Math.sin(speed * 2.0 * time);
+    const lightZ = radius * Math.sin(speed * 2.0 * time);
     const lightPos = vec3.fromValues(lightX, height, lightZ);
 
     const lightProj = mat4.create();
