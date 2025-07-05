@@ -4,6 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: {
     'test-pass': './test-pass/index.ts',
+    'test-pass2': './test-pass2/index.ts',
     'test-vertex-buffer': './test-vertex-buffer/index.ts',
     'test-index-buffer': './test-index-buffer/index.ts',
     'test-uniform-buffer': './test-uniform-buffer/index.ts',
