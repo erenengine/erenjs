@@ -142,10 +142,30 @@ export class GL {
     this.#gl.clear(this.#gl.DEPTH_BUFFER_BIT);
   }
 
+  createImageTexture(bitmap: ImageBitmap) {
+    const gl = this.#gl;
+    const tex = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      bitmap,
+    );
+
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+    return tex;
+  }
+
   createDepthTexture(width: number, height: number) {
     const gl = this.#gl;
     const tex = gl.createTexture();
-    if (!tex) throw new Error('Failed to create depth texture');
 
     gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.texImage2D(
@@ -218,6 +238,13 @@ export class GL {
 
   deleteFramebuffer(framebuffer: WebGLFramebuffer) {
     this.#gl.deleteFramebuffer(framebuffer);
+  }
+
+  bindImageTexture(texture: WebGLTexture, location: WebGLUniformLocation) {
+    const gl = this.#gl;
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.uniform1i(location, 0);
   }
 
   bindRawDepthTexture(texture: WebGLTexture, location: WebGLUniformLocation) {

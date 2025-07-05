@@ -13,6 +13,7 @@ module.exports = {
     'test-depth-buffer': './test-depth-buffer/index.ts',
     'test-compute-shader': './test-compute-shader/index.ts',
     'test-shadow': './test-shadow/index.ts',
+    'test-texture': './test-texture/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',

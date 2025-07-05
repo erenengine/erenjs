@@ -3,7 +3,7 @@ import FRAG_SHADER_STR from './shaders/shader.frag';
 import { Program } from '../../dist/program.js';
 import { FLOAT, GL, LESS } from '../../dist/gl.js';
 import { UniformBufferObject } from './ubo';
-import { mat4, vec3 } from 'gl-matrix';
+import { mat4, vec2, vec3 } from 'gl-matrix';
 import { flattenVertices, Vertex } from './vertex';
 
 const CLEAR_COLOR = { r: 0.1921, g: 0.302, b: 0.4745, a: 1 };
@@ -13,34 +13,42 @@ const TEST_VERTICES: Vertex[] = [
   {
     pos: vec3.fromValues(-0.5, -0.5, 0.0),
     color: vec3.fromValues(1.0, 0.0, 0.0),
+    tex_coords: vec2.fromValues(0.0, 0.0),
   },
   {
     pos: vec3.fromValues(0.5, -0.5, 0.0),
     color: vec3.fromValues(0.0, 1.0, 0.0),
+    tex_coords: vec2.fromValues(1.0, 0.0),
   },
   {
     pos: vec3.fromValues(0.5, 0.5, 0.0),
     color: vec3.fromValues(0.0, 0.0, 1.0),
+    tex_coords: vec2.fromValues(1.0, 1.0),
   },
   {
     pos: vec3.fromValues(-0.5, 0.5, 0.0),
     color: vec3.fromValues(1.0, 1.0, 1.0),
+    tex_coords: vec2.fromValues(0.0, 1.0),
   },
   {
     pos: vec3.fromValues(-0.5, -0.5, -0.5),
     color: vec3.fromValues(1.0, 0.0, 0.0),
+    tex_coords: vec2.fromValues(0.0, 0.0),
   },
   {
     pos: vec3.fromValues(0.5, -0.5, -0.5),
     color: vec3.fromValues(0.0, 1.0, 0.0),
+    tex_coords: vec2.fromValues(1.0, 0.0),
   },
   {
     pos: vec3.fromValues(0.5, 0.5, -0.5),
     color: vec3.fromValues(0.0, 0.0, 1.0),
+    tex_coords: vec2.fromValues(1.0, 1.0),
   },
   {
     pos: vec3.fromValues(-0.5, 0.5, -0.5),
     color: vec3.fromValues(1.0, 1.0, 1.0),
+    tex_coords: vec2.fromValues(0.0, 1.0),
   },
 ];
 
@@ -53,9 +61,13 @@ export class TestRenderPass {
   #uModelLoc: WebGLUniformLocation;
   #uViewLoc: WebGLUniformLocation;
   #uProjLoc: WebGLUniformLocation;
+  #uTextureLoc: WebGLUniformLocation;
+  #texture: WebGLTexture;
   #startTime: number;
 
-  constructor(gl: GL) {
+  constructor(gl: GL, bitmap: ImageBitmap) {
+    this.#texture = gl.createImageTexture(bitmap);
+
     this.#gl = gl;
     this.#program = new Program(gl, VERT_SHADER_STR, FRAG_SHADER_STR);
 
@@ -65,16 +77,18 @@ export class TestRenderPass {
 
     this.#vao = gl.createVertexArray(flattenVertices(TEST_VERTICES), new Uint16Array(TEST_INDICES));
 
-    // Enable attributes
-    const stride = 6 * 4;
-    gl.enableVertexAttribArray(0);
+    const stride = 8 * 4;
+    gl.enableVertexAttribArray(0);             // position
     gl.vertexAttribPointer(0, 3, FLOAT, false, stride, 0);
-    gl.enableVertexAttribArray(1);
+    gl.enableVertexAttribArray(1);             // color
     gl.vertexAttribPointer(1, 3, FLOAT, false, stride, 3 * 4);
+    gl.enableVertexAttribArray(2);             // texCoord
+    gl.vertexAttribPointer(2, 2, FLOAT, false, stride, 6 * 4);
 
     this.#uModelLoc = this.#program.getUniformLocation('uModel');
     this.#uViewLoc = this.#program.getUniformLocation('uView');
     this.#uProjLoc = this.#program.getUniformLocation('uProj');
+    this.#uTextureLoc = this.#program.getUniformLocation('uTexture');
 
     this.#startTime = Date.now();
   }
@@ -113,6 +127,8 @@ export class TestRenderPass {
     this.#gl.uniformMatrix4fv(this.#uModelLoc, false, ubo.model);
     this.#gl.uniformMatrix4fv(this.#uViewLoc, false, ubo.view);
     this.#gl.uniformMatrix4fv(this.#uProjLoc, false, ubo.proj);
+
+    this.#gl.bindImageTexture(this.#texture, this.#uTextureLoc);
 
     this.#gl.drawElements(TEST_INDICES.length);
   }
