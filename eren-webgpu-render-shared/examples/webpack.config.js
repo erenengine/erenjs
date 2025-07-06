@@ -14,6 +14,7 @@ module.exports = {
     'test-compute-shader': './test-compute-shader/index.ts',
     'test-shadow': './test-shadow/index.ts',
     'test-texture': './test-texture/index.ts',
+    'test-model': './test-model/index.ts',
   },
   output: {
     filename: '[name]/bundle.js',
