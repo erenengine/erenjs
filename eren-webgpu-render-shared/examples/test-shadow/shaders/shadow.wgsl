@@ -7,7 +7,6 @@ var<uniform> ubo: ShadowUBO;
 
 struct VertexInput {
     @location(0) inPosition: vec3<f32>,
-    @location(1) inNormal: vec3<f32>,
 };
 
 struct VertexOutput {
