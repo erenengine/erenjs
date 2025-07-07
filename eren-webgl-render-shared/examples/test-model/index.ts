@@ -40,7 +40,7 @@ function loadObjMesh(objBytes: Uint8Array) {
 
   const safeVec2 = (arr: vec2[], idx: number) => {
     const t = arr[idx - 1];
-    return vec2.fromValues(t[0], t[1]);
+    return vec2.fromValues(t[0], 1.0 - t[1]);
   };
 
   for (const face of model.faces) {
