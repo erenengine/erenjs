@@ -24,11 +24,16 @@ export class MainPass {
   #uLightDirLoc: WebGLUniformLocation;
   #uLightColorLoc: WebGLUniformLocation;
   #uShadowMapLoc: WebGLUniformLocation;
+  #uTextureLoc: WebGLUniformLocation;
 
   #mainUBO?: MainUBO;
   #lightUBO?: LightUBO;
 
-  constructor(gl: GL, shadowTexture: WebGLTexture) {
+  #texture: WebGLTexture;
+
+  constructor(gl: GL, shadowTexture: WebGLTexture, bitmap: ImageBitmap) {
+    this.#texture = gl.createImageTexture(bitmap);
+
     this.#gl = gl;
     this.#shadowTexture = shadowTexture;
 
@@ -41,6 +46,7 @@ export class MainPass {
     this.#uLightDirLoc = this.#program.getUniformLocation('uLightDirection');
     this.#uLightColorLoc = this.#program.getUniformLocation('uLightColor');
     this.#uShadowMapLoc = this.#program.getUniformLocation('shadowMap');
+    this.#uTextureLoc = this.#program.getUniformLocation('uTextureSampler');
 
     gl.enableDepthTest();
     gl.depthFunc(LESS);
@@ -73,7 +79,8 @@ export class MainPass {
       gl.uniform3fv(this.#uLightColorLoc, this.#lightUBO.color);
     }
 
-    gl.bindRawDepthTexture(this.#shadowTexture, this.#uShadowMapLoc);
+    gl.bindRawDepthTexture(0, this.#shadowTexture, this.#uShadowMapLoc);
+    gl.bindImageTexture(1, this.#texture, this.#uTextureLoc);
 
     for (const mesh of meshes) {
       gl.bindVertexArray(mesh.vao);

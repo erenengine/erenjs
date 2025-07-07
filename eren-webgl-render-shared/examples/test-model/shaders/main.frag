@@ -4,13 +4,15 @@ precision highp float;
 in vec3 fragPosWorld;
 in vec3 normalWorld;
 in vec4 shadowCoord;
+in vec2 fragTexCoord;
 
 out vec4 outColor;
 
-uniform sampler2D shadowMap;
-
 uniform vec3 uLightDirection;  // 단위벡터
 uniform vec3 uLightColor;      // 빛 색상
+
+uniform sampler2D shadowMap;
+uniform sampler2D uTextureSampler;
 
 float calculateShadow(vec4 shadowCoord) {
     vec3 projCoords = shadowCoord.xyz / shadowCoord.w;
@@ -59,7 +61,7 @@ void main() {
     if (fragPosWorld.y == -1.0) {
         baseColor = vec3(0.8, 0.8, 0.8); // 땅
     } else {
-        baseColor = vec3(1.0, 0.7, 0.2); // 큐브
+        baseColor = texture(uTextureSampler, fragTexCoord).rgb; // 큐브
     }
 
     vec3 lighting = ambient + (1.0 - shadow) * diffuse;

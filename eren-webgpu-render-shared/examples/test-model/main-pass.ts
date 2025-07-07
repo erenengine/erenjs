@@ -26,9 +26,12 @@ export class MainPass {
   #lightUBOBuffer: GPUBuffer;
   #bindGroupMain: GPUBindGroup;
 
-  #bindGroupLayoutShadow: GPUBindGroupLayout;
   #shadowSampler: GPUSampler;
-  #bindGroupShadow: GPUBindGroup;
+  #textureImageView: GPUTextureView;
+  #textureSampler: GPUSampler;
+
+  #bindGroupLayoutShadowAndTexture: GPUBindGroupLayout;
+  bindGroupShadowAndTexture: GPUBindGroup;
 
   #sceneDepthView: GPUTextureView;
 
@@ -38,7 +41,30 @@ export class MainPass {
     shadowTextureView: GPUTextureView,
     canvasWidth: number,
     canvasHeight: number,
+    bitmap: ImageBitmap,
   ) {
+    const texture = device.createTexture({
+      label: 'Test Texture',
+      size: { width: bitmap.width, height: bitmap.height },
+      format: 'rgba8unorm',
+      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+
+    device.queue.copyExternalImageToTexture(
+      { source: bitmap },
+      { texture },
+      { width: bitmap.width, height: bitmap.height },
+    );
+
+    this.#textureImageView = texture.createView();
+    this.#textureSampler = device.createSampler({
+      magFilter: 'linear',
+      minFilter: 'linear',
+      mipmapFilter: 'linear',
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+    });
+
     this.#device = device;
 
     const shaderModule = device.createShaderModule({
@@ -59,11 +85,21 @@ export class MainPass {
           visibility: GPUShaderStage.FRAGMENT,
           buffer: { type: 'uniform' },
         },
+        {
+          binding: 2, // Texture
+          visibility: GPUShaderStage.FRAGMENT,
+          texture: { viewDimension: '2d', multisampled: false, sampleType: 'float' },
+        },
+        {
+          binding: 3, // TextureSampler
+          visibility: GPUShaderStage.FRAGMENT,
+          sampler: { type: 'filtering' },
+        },
       ],
     });
 
-    this.#bindGroupLayoutShadow = device.createBindGroupLayout({
-      label: 'Shadow Sampler Layout',
+    this.#bindGroupLayoutShadowAndTexture = device.createBindGroupLayout({
+      label: 'Shadow and Texture Layout',
       entries: [
         {
           binding: 0,
@@ -74,6 +110,16 @@ export class MainPass {
           binding: 1,
           visibility: GPUShaderStage.FRAGMENT,
           sampler: { type: 'comparison' },
+        },
+        {
+          binding: 2,
+          visibility: GPUShaderStage.FRAGMENT,
+          texture: { viewDimension: '2d', multisampled: false, sampleType: 'float' },
+        },
+        {
+          binding: 3,
+          visibility: GPUShaderStage.FRAGMENT,
+          sampler: { type: 'filtering' },
         },
       ],
     });
@@ -110,14 +156,16 @@ export class MainPass {
       entries: [
         { binding: 0, resource: { buffer: this.#mainUBOBuffer } },
         { binding: 1, resource: { buffer: this.#lightUBOBuffer } },
+        { binding: 2, resource: this.#textureImageView },
+        { binding: 3, resource: this.#textureSampler },
       ],
     });
 
-    this.#bindGroupShadow = this.#createShadowBindGroup(shadowTextureView);
+    this.bindGroupShadowAndTexture = this.#createShadowAndTextureBindGroup(shadowTextureView, this.#textureImageView);
 
     const pipelineLayout = device.createPipelineLayout({
       label: 'Main Pipeline Layout',
-      bindGroupLayouts: [bindGroupLayoutMain, this.#bindGroupLayoutShadow],
+      bindGroupLayouts: [bindGroupLayoutMain, this.#bindGroupLayoutShadowAndTexture],
     });
 
     this.#pipeline = device.createRenderPipeline({
@@ -170,7 +218,7 @@ export class MainPass {
     height: number,
     shadowTextureView: GPUTextureView,
   ) {
-    this.#bindGroupShadow = this.#createShadowBindGroup(shadowTextureView);
+    this.bindGroupShadowAndTexture = this.#createShadowAndTextureBindGroup(shadowTextureView, this.#textureImageView);
     this.#sceneDepthView = this.#createDepthTextureView(width, height);
   }
 
@@ -199,7 +247,7 @@ export class MainPass {
 
     passEncoder.setPipeline(this.#pipeline);
     passEncoder.setBindGroup(0, this.#bindGroupMain);
-    passEncoder.setBindGroup(1, this.#bindGroupShadow);
+    passEncoder.setBindGroup(1, this.bindGroupShadowAndTexture);
 
     for (const mesh of meshes) {
       passEncoder.setVertexBuffer(0, mesh.buffer, mesh.vertexOffset);
@@ -210,13 +258,15 @@ export class MainPass {
     passEncoder.end();
   }
 
-  #createShadowBindGroup(shadowTextureView: GPUTextureView): GPUBindGroup {
+  #createShadowAndTextureBindGroup(shadowTextureView: GPUTextureView, textureView: GPUTextureView): GPUBindGroup {
     return this.#device.createBindGroup({
-      label: 'Shadow Bind Group',
-      layout: this.#bindGroupLayoutShadow,
+      label: 'Shadow and Texture Bind Group',
+      layout: this.#bindGroupLayoutShadowAndTexture,
       entries: [
         { binding: 0, resource: shadowTextureView },
         { binding: 1, resource: this.#shadowSampler },
+        { binding: 2, resource: textureView },
+        { binding: 3, resource: this.#textureSampler },
       ],
     });
   }

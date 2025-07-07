@@ -2,10 +2,12 @@
 
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inNormal;
+layout(location = 2) in vec2 inTexCoord;
 
 out vec3 fragPosWorld;
 out vec3 normalWorld;
 out vec4 shadowCoord;
+out vec2 fragTexCoord;
 
 uniform mat4 uModel;
 uniform mat4 uView;
@@ -18,6 +20,7 @@ void main() {
     fragPosWorld = worldPos.xyz;
     normalWorld = mat3(transpose(inverse(uModel))) * inNormal;
     shadowCoord = uLightViewProj * worldPos;
+    fragTexCoord = inTexCoord;
 
     gl_Position = uProj * uView * worldPos;
 }

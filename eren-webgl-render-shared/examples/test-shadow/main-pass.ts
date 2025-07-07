@@ -73,7 +73,7 @@ export class MainPass {
       gl.uniform3fv(this.#uLightColorLoc, this.#lightUBO.color);
     }
 
-    gl.bindRawDepthTexture(this.#shadowTexture, this.#uShadowMapLoc);
+    gl.bindRawDepthTexture(0, this.#shadowTexture, this.#uShadowMapLoc);
 
     for (const mesh of meshes) {
       gl.bindVertexArray(mesh.vao);

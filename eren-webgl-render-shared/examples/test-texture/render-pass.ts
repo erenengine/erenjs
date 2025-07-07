@@ -128,7 +128,7 @@ export class TestRenderPass {
     this.#gl.uniformMatrix4fv(this.#uViewLoc, false, ubo.view);
     this.#gl.uniformMatrix4fv(this.#uProjLoc, false, ubo.proj);
 
-    this.#gl.bindImageTexture(this.#texture, this.#uTextureLoc);
+    this.#gl.bindImageTexture(0, this.#texture, this.#uTextureLoc);
 
     this.#gl.drawElements(TEST_INDICES.length);
   }

@@ -10,11 +10,13 @@ export function createMeshBuffer(gl: GL, vertices: Vertex[], indices: number[]):
   const vao = gl.createVertexArray(flattenVertices(vertices), new Uint16Array(indices));
 
   // Enable attributes
-  const stride = 6 * 4;
-  gl.enableVertexAttribArray(0);
+  const stride = 8 * 4;
+  gl.enableVertexAttribArray(0);             // position
   gl.vertexAttribPointer(0, 3, FLOAT, false, stride, 0);
-  gl.enableVertexAttribArray(1);
+  gl.enableVertexAttribArray(1);             // color
   gl.vertexAttribPointer(1, 3, FLOAT, false, stride, 3 * 4);
+  gl.enableVertexAttribArray(2);             // texCoord
+  gl.vertexAttribPointer(2, 2, FLOAT, false, stride, 6 * 4);
 
   return {
     vao,

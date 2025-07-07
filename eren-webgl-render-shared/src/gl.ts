@@ -240,18 +240,18 @@ export class GL {
     this.#gl.deleteFramebuffer(framebuffer);
   }
 
-  bindImageTexture(texture: WebGLTexture, location: WebGLUniformLocation) {
+  bindImageTexture(textureUnit: number, texture: WebGLTexture, location: WebGLUniformLocation) {
     const gl = this.#gl;
-    gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(gl.TEXTURE0 + textureUnit);
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.uniform1i(location, 0);
+    gl.uniform1i(location, textureUnit);
   }
 
-  bindRawDepthTexture(texture: WebGLTexture, location: WebGLUniformLocation) {
+  bindRawDepthTexture(textureUnit: number, texture: WebGLTexture, location: WebGLUniformLocation) {
     const gl = this.#gl;
-    gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(gl.TEXTURE0 + textureUnit);
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.NONE);
-    gl.uniform1i(location, 0);
+    gl.uniform1i(location, textureUnit);
   }
 }

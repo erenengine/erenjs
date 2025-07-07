@@ -30,7 +30,7 @@ export class DebugQuadPass {
 
     this.#program.use();
 
-    this.#gl.bindRawDepthTexture(this.#shadowTexture, this.#uShadowMapLoc);
+    this.#gl.bindRawDepthTexture(0, this.#shadowTexture, this.#uShadowMapLoc);
     this.#gl.draw(3, 1);
   }
 }

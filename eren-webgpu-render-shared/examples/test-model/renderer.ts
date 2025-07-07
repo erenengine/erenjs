@@ -15,11 +15,11 @@ export class TestRenderer {
   #mainPass: MainPass;
   #startTime: number;
 
-  constructor(device: Device, format: GPUTextureFormat, canvasWidth: number, canvasHeight: number) {
+  constructor(device: Device, format: GPUTextureFormat, canvasWidth: number, canvasHeight: number, bitmap: ImageBitmap) {
     this.#device = device;
     this.#shadowPass = new ShadowPass(device, canvasWidth, canvasHeight);
     this.#debugQuadPass = new DebugQuadPass(device, format, this.#shadowPass.shadowTextureView);
-    this.#mainPass = new MainPass(device, format, this.#shadowPass.shadowTextureView, canvasWidth, canvasHeight);
+    this.#mainPass = new MainPass(device, format, this.#shadowPass.shadowTextureView, canvasWidth, canvasHeight, bitmap);
     this.#startTime = performance.now();
   }
 
@@ -33,7 +33,7 @@ export class TestRenderer {
     const encoder = this.#device.createCommandEncoder({ label: 'Test Render Encoder' });
 
     const time = (performance.now() - this.#startTime) / 1000.0;
-    const speed = 0.2;
+    const speed = 0.1;
     const radius = 8.0;
     const height = 6.0;
 
@@ -58,9 +58,9 @@ export class TestRenderer {
     } else {
       // Camera follows a slower orbit opposite to the light
       const camPos = vec3.fromValues(
-        radius * Math.cos(speed * time),
+        radius * Math.cos(-speed * time),
         height,
-        radius * Math.sin(speed * time),
+        radius * Math.sin(-speed * time),
       );
 
       const viewMat = mat4.create();
@@ -69,7 +69,7 @@ export class TestRenderer {
       const projMat = mat4.create();
       mat4.perspective(
         projMat,
-        (45 * Math.PI) / 180,
+        (15 * Math.PI) / 180,
         canvasWidth / canvasHeight,
         0.1,
         100.0,

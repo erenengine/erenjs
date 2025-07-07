@@ -1,12 +1,76 @@
 import { GL } from '../../dist/gl.js';
 import { createMeshBuffer } from './mesh';
+import { OBJFile } from './obj';
 import { TestRenderer } from './renderer';
-import { vec3 } from 'gl-matrix';
+import { mat3, quat, vec2, vec3 } from 'gl-matrix';
+import { Vertex } from './vertex';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
 const gl = new GL(canvas.getContext('webgl2') as WebGL2RenderingContext);
-const renderer = new TestRenderer(gl, canvas.width, canvas.height);
+
+const res = await fetch('./assets/viking_room.png');
+const blob = await res.blob();                 // <- 브라우저 디코더 사용
+const bitmap = await createImageBitmap(blob);  // RGBA8 기본 포맷
+
+const renderer = new TestRenderer(gl, canvas.width, canvas.height, bitmap);
+
+function loadObjMesh(objBytes: Uint8Array) {
+  const objFile = new OBJFile(new TextDecoder('utf-8').decode(objBytes));
+  const { models } = objFile.parse();
+  if (!models.length) throw new Error("OBJ에는 최소 1개의 모델(o)이 필요합니다.");
+
+  const model = models[0];
+
+  const vertices: Vertex[] = [];
+  const indices: number[] = [];
+
+  // “pos/norm/uv” 조합 → 인덱스
+  const unique = new Map<string, number>();
+
+  const rot = mat3.fromQuat(
+    mat3.create(),
+    quat.setAxisAngle(quat.create(), [1, 0, 0], Math.PI * 1.5)
+  );
+
+  const safeVec3 = (arr: vec3[], idx: number) => {
+    const v = arr[idx - 1]; // OBJ는 1-based
+    return vec3.fromValues(v[0], v[1], v[2]);
+  };
+
+  const safeVec2 = (arr: vec2[], idx: number) => {
+    const t = arr[idx - 1];
+    return vec2.fromValues(t[0], t[1]);
+  };
+
+  for (const face of model.faces) {
+    for (const fv of face.vertices) {
+      const key = `${fv.vertexIndex}/${fv.vertexNormalIndex}/${fv.textureCoordsIndex}`;
+
+      let index = unique.get(key);
+      if (index === undefined) {
+        const position = safeVec3(model.vertices, fv.vertexIndex);
+        vec3.transformMat3(position, position, rot);
+
+        const normal = fv.vertexNormalIndex
+          ? safeVec3(model.vertexNormals, fv.vertexNormalIndex)
+          : vec3.fromValues(0, 1, 0);
+
+        const texCoord = fv.textureCoordsIndex
+          ? safeVec2(model.textureCoords, fv.textureCoordsIndex)
+          : vec2.create();
+
+        index = vertices.length;
+        vertices.push({ position, normal, texCoord });
+        unique.set(key, index);
+      }
+
+      indices.push(index);
+    }
+  }
+
+  return { vertices, indices };
+}
 
 function createGroundPlane() {
   const normal = vec3.fromValues(0, 1, 0);
@@ -22,6 +86,7 @@ function createGroundPlane() {
   const vertices = positions.map((pos) => ({
     position: pos,
     normal: normal,
+    texCoord: vec2.fromValues(0, 0),
   }));
 
   const indices = [0, 2, 1, 2, 0, 3];
@@ -29,63 +94,14 @@ function createGroundPlane() {
   return { vertices, indices };
 }
 
-function createCubeMesh() {
-  let positions = [
-    // Front face
-    [vec3.fromValues(-0.5, -0.5, 0.5), vec3.fromValues(0.0, 0.0, 1.0)],
-    [vec3.fromValues(0.5, -0.5, 0.5), vec3.fromValues(0.0, 0.0, 1.0)],
-    [vec3.fromValues(0.5, 0.5, 0.5), vec3.fromValues(0.0, 0.0, 1.0)],
-    [vec3.fromValues(-0.5, 0.5, 0.5), vec3.fromValues(0.0, 0.0, 1.0)],
-    // Back face
-    [vec3.fromValues(0.5, -0.5, -0.5), vec3.fromValues(0.0, 0.0, -1.0)],
-    [vec3.fromValues(-0.5, -0.5, -0.5), vec3.fromValues(0.0, 0.0, -1.0)],
-    [vec3.fromValues(-0.5, 0.5, -0.5), vec3.fromValues(0.0, 0.0, -1.0)],
-    [vec3.fromValues(0.5, 0.5, -0.5), vec3.fromValues(0.0, 0.0, -1.0)],
-    // Top face
-    [vec3.fromValues(-0.5, 0.5, 0.5), vec3.fromValues(0.0, 1.0, 0.0)],
-    [vec3.fromValues(0.5, 0.5, 0.5), vec3.fromValues(0.0, 1.0, 0.0)],
-    [vec3.fromValues(0.5, 0.5, -0.5), vec3.fromValues(0.0, 1.0, 0.0)],
-    [vec3.fromValues(-0.5, 0.5, -0.5), vec3.fromValues(0.0, 1.0, 0.0)],
-    // Bottom face
-    [vec3.fromValues(-0.5, -0.5, -0.5), vec3.fromValues(0.0, -1.0, 0.0)],
-    [vec3.fromValues(0.5, -0.5, -0.5), vec3.fromValues(0.0, -1.0, 0.0)],
-    [vec3.fromValues(0.5, -0.5, 0.5), vec3.fromValues(0.0, -1.0, 0.0)],
-    [vec3.fromValues(-0.5, -0.5, 0.5), vec3.fromValues(0.0, -1.0, 0.0)],
-    // Right face
-    [vec3.fromValues(0.5, -0.5, 0.5), vec3.fromValues(1.0, 0.0, 0.0)],
-    [vec3.fromValues(0.5, -0.5, -0.5), vec3.fromValues(1.0, 0.0, 0.0)],
-    [vec3.fromValues(0.5, 0.5, -0.5), vec3.fromValues(1.0, 0.0, 0.0)],
-    [vec3.fromValues(0.5, 0.5, 0.5), vec3.fromValues(1.0, 0.0, 0.0)],
-    // Left face
-    [vec3.fromValues(-0.5, -0.5, -0.5), vec3.fromValues(-1.0, 0.0, 0.0)],
-    [vec3.fromValues(-0.5, -0.5, 0.5), vec3.fromValues(-1.0, 0.0, 0.0)],
-    [vec3.fromValues(-0.5, 0.5, 0.5), vec3.fromValues(-1.0, 0.0, 0.0)],
-    [vec3.fromValues(-0.5, 0.5, -0.5), vec3.fromValues(-1.0, 0.0, 0.0)],
-  ];
-
-  const vertices = positions.map((pos) => ({
-    position: pos[0],
-    normal: pos[1],
-  }));
-
-  const indices = [
-    0, 1, 2, 2, 3, 0, // Front
-    4, 5, 6, 6, 7, 4, // Back
-    8, 9, 10, 10, 11, 8, // Top
-    12, 13, 14, 14, 15, 12, // Bottom
-    16, 17, 18, 18, 19, 16, // Right
-    20, 21, 22, 22, 23, 20, // Left
-  ];
-
-  return { vertices, indices };
-}
+const objBytes = await fetch('./assets/viking_room.obj').then(r => r.arrayBuffer());
+const objMesh = loadObjMesh(new Uint8Array(objBytes));
 
 const groundPlane = createGroundPlane();
-const cubeMesh = createCubeMesh();
 
 const meshes = [
+  createMeshBuffer(gl, objMesh.vertices, objMesh.indices),
   createMeshBuffer(gl, groundPlane.vertices, groundPlane.indices),
-  createMeshBuffer(gl, cubeMesh.vertices, cubeMesh.indices),
 ];
 
 function frame() {
