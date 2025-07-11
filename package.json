@@ -1,0 +1,8 @@
+{
+  "name": "erenengine",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "license": "(MIT OR Apache-2.0)"
+}
