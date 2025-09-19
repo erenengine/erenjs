@@ -1,4 +1,4 @@
-import { FLOAT, GL } from '../../dist/gl.js';
+import { FLOAT, GL } from '../../lib/gl.js';
 import { flattenVertices, Vertex } from './vertex';
 
 export interface MeshBuffer {

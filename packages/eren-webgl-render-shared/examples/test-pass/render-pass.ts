@@ -1,7 +1,7 @@
 import VERT_SHADER_STR from './shaders/shader.vert';
 import FRAG_SHADER_STR from './shaders/shader.frag';
-import { Program } from '../../dist/program.js';
-import { GL } from '../../dist/gl.js';
+import { Program } from '../../lib/program.js';
+import { GL } from '../../lib/gl.js';
 
 const CLEAR_COLOR = { r: 0.1921, g: 0.302, b: 0.4745, a: 1 };
 

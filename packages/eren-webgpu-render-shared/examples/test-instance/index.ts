@@ -1,3 +1,3 @@
-import { Instance } from '../../dist/instance.js';
+import { Instance } from '../../lib/instance.js';
 
 console.log(new Instance());

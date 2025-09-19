@@ -1,4 +1,4 @@
-import { GL } from '../../dist/gl.js';
+import { GL } from '../../lib/gl.js';
 import { TestRenderer } from './renderer';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;

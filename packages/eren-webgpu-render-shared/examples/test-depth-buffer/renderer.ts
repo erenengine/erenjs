@@ -1,4 +1,4 @@
-import { Device } from '../../dist/device.js';
+import { Device } from '../../lib/device.js';
 import { TestRenderPass } from './render-pass';
 
 export class TestRenderer {

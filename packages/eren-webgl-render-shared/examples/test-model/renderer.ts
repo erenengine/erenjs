@@ -3,7 +3,7 @@ import { DebugQuadPass } from './debug-quad-pass';
 import { ShadowPass } from './shadow-pass';
 import { LightUBO, MainUBO } from './ubo';
 import { MainPass } from './main-pass';
-import { GL } from '../../dist/gl.js';
+import { GL } from '../../lib/gl.js';
 import { MeshBuffer } from './mesh';
 
 const DEBUG_QUAD_PASS_ENABLED = false;

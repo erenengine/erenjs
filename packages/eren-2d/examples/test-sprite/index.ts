@@ -1,8 +1,8 @@
-import { GameNode } from '../../dist/nodes/game_node.js';
-import { GameState } from '../../dist/state.js';
-import { GlobalTransform } from '../../dist/transform.js';
-import { AssetBundle } from '../../dist/asset_bundle.js';
-import { SpriteNode } from '../../dist/nodes/sprite_node.js';
+import { GameNode } from '../../lib/nodes/game_node.js';
+import { GameState } from '../../lib/state.js';
+import { GlobalTransform } from '../../lib/transform.js';
+import { AssetBundle } from '../../lib/asset_bundle.js';
+import { SpriteNode } from '../../lib/nodes/sprite_node.js';
 
 enum SpriteAssets {
   Logo,

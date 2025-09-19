@@ -1,4 +1,4 @@
-import { Device } from '../../dist/device.js';
+import { Device } from '../../lib/device.js';
 import { MeshBuffer } from './mesh';
 import SHADER_STR from './shaders/shadow.wgsl';
 import { flattenShadowUBO, ShadowUBO } from './ubo';

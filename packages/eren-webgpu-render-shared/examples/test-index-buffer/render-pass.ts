@@ -1,5 +1,5 @@
 import SHADER_STR from './shaders/shader.wgsl';
-import { Device } from '../../dist/device.js';
+import { Device } from '../../lib/device.js';
 import { flattenVertices, Vertex, VERTEX_DESC } from './vertex';
 import { mat4, vec2, vec3 } from 'gl-matrix';
 

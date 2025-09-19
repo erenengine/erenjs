@@ -1,6 +1,6 @@
 import VERT_SHADER_STR from './shaders/shadow.vert';
-import { Program } from '../../dist/program.js';
-import { FLOAT, GL, LESS } from '../../dist/gl.js';
+import { Program } from '../../lib/program.js';
+import { FLOAT, GL, LESS } from '../../lib/gl.js';
 import { ShadowUBO } from './ubo';
 import { MeshBuffer } from './mesh';
 

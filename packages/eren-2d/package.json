@@ -1,8 +1,8 @@
 {
   "name": "@erenengine/next-2d",
   "type": "module",
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.js",
+  "types": "./lib/index.d.ts",
+  "main": "./lib/index.js",
   "dependencies": {
     "gl-matrix": "^3.4.3"
   },

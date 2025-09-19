@@ -1,4 +1,4 @@
-import { Device } from '../../dist/device.js';
+import { Device } from '../../lib/device.js';
 import { MeshBuffer } from './mesh';
 import SHADER_STR from './shaders/main.wgsl';
 import { VERTEX_DESC } from './vertex';

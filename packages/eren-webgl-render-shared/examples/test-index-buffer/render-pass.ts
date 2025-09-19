@@ -1,7 +1,7 @@
 import VERT_SHADER_STR from './shaders/shader.vert';
 import FRAG_SHADER_STR from './shaders/shader.frag';
-import { Program } from '../../dist/program.js';
-import { ARRAY_BUFFER, ELEMENT_ARRAY_BUFFER, FLOAT, GL, STATIC_DRAW } from '../../dist/gl.js';
+import { Program } from '../../lib/program.js';
+import { ARRAY_BUFFER, ELEMENT_ARRAY_BUFFER, FLOAT, GL, STATIC_DRAW } from '../../lib/gl.js';
 import { mat4, vec2, vec3 } from 'gl-matrix';
 import { flattenVertices, Vertex } from './vertex';
 

@@ -1,7 +1,7 @@
-import { Instance } from '../../dist/instance.js';
-import { Adapter } from '../../dist/adapter.js';
-import { Context } from '../../dist/context.js';
-import { Device } from '../../dist/device.js';
+import { Instance } from '../../lib/instance.js';
+import { Adapter } from '../../lib/adapter.js';
+import { Context } from '../../lib/context.js';
+import { Device } from '../../lib/device.js';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 

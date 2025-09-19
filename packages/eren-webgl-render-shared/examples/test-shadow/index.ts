@@ -1,4 +1,4 @@
-import { GL } from '../../dist/gl.js';
+import { GL } from '../../lib/gl.js';
 import { createMeshBuffer } from './mesh';
 import { TestRenderer } from './renderer';
 import { vec3 } from 'gl-matrix';

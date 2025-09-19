@@ -1,5 +1,5 @@
 import { TestRenderPass } from './render-pass';
-import { GL } from '../../dist/gl.js';
+import { GL } from '../../lib/gl.js';
 
 export class TestRenderer {
   #renderPass: TestRenderPass;

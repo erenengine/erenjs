@@ -1,4 +1,4 @@
-import { Device } from '../../dist/device.js';
+import { Device } from '../../lib/device.js';
 import { flattenVertices, Vertex } from './vertex';
 
 export interface MeshBuffer {

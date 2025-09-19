@@ -1,5 +1,5 @@
 import { mat4, vec3 } from 'gl-matrix';
-import { Device } from '../../dist/device.js';
+import { Device } from '../../lib/device.js';
 import { DebugQuadPass } from './debug-quad-pass';
 import { MeshBuffer } from './mesh';
 import { ShadowPass } from './shadow-pass';

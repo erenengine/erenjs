@@ -2,8 +2,8 @@
 import VERT_SHADER_STR from './shaders/main.vert';
 import FRAG_SHADER_STR from './shaders/main.frag';
 
-import { Program } from '../../dist/program.js';
-import { GL, LESS } from '../../dist/gl.js';
+import { Program } from '../../lib/program.js';
+import { GL, LESS } from '../../lib/gl.js';
 
 import { MainUBO, LightUBO } from './ubo';
 import { MeshBuffer } from './mesh';
